@@ -43,12 +43,6 @@ class Hotel(Resource):
     arguments.add_argument('estrelas')
     arguments.add_argument('valor')
 
-    def find_hotel(id):
-        for hotel in hotels:
-            if hotel['id'] == id:
-                return hotel
-        return None
-
     def get(self, id):
         hotel = Hotel.find_hotel(id)
         if hotel:
@@ -56,11 +50,12 @@ class Hotel(Resource):
         return {'message': 'Hotel not found!'}, 404
 
     def post(self, id):
+        if HotelModel.find_hotel(id):
+            return {'message': f'Hotel - {id} already exists.'}, 400
         data = Hotel.arguments.parse_args()
         hotel_object = HotelModel(id, **data)
-        new_hotel = hotel_object.json()
-        hotels.append(new_hotel)
-        return new_hotel, 200
+        hotel_object.save_hotel()
+        return hotel_object.json(), 200
 
     def put(self, id):
         data = Hotel.arguments.parse_args()
