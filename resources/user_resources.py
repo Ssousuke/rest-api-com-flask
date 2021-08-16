@@ -12,6 +12,9 @@ class User(Resource):
     def delete(self, id):
         user = UserModel.find_user(id)
         if user:
-            user.delete_user()
+            try:
+                user.delete_user()
+            except:
+                return {'message': 'Internal server error, unable to save data.'}, 500
             return {'message': 'User been deleted!'}
         return {'message': 'User not found!'}, 404
