@@ -3,7 +3,7 @@ from sql_alchemy import db
 
 class HotelModel(db.Model):
     __tablename__ = 'hotels'
-    id = db.Column(db.String, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(80))
     estrelas = db.Column(db.Float(precision=1))
     valor = db.Column(db.Float(precision=2))
