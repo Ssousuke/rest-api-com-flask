@@ -2,39 +2,13 @@ from flask_restful import Resource, reqparse
 
 from models.hotel_models import HotelModel
 
-hotels = [
-    {
-        'id': 'Hotel1',
-        'nome': 'Hotel1',
-        'estrelas': '4,5',
-        'valor': '450,56',
-    }, {
-        'id': 'Hotel2',
-        'nome': 'Hotel2',
-        'estrelas': '4,5',
-        'valor': '450,56',
-    }, {
-        'id': 'Hotel3',
-        'nome': 'Hotel3',
-        'estrelas': '4,5',
-        'valor': '450,56',
-    }, {
-        'id': 'Hotel4',
-        'nome': 'Hotel4',
-        'estrelas': '4,5',
-        'valor': '450,56',
-    }, {
-        'id': 'Hotel5',
-        'nome': 'Hotel5',
-        'estrelas': '4,5',
-        'valor': '450,56',
-    }
-]
-
 
 class Hotels(Resource):
     def get(self):
-        return {'hotels': hotels}
+        return {
+            # Retorne todos os hotels dentro do query em HotelModel
+            'hotels': [hotel.json() for hotel in HotelModel.query.all()]
+        }
 
 
 class Hotel(Resource):
