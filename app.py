@@ -15,7 +15,7 @@ def create_db():
 
 
 api.add_resource(Hotels, '/hotels')
-api.add_resource(Hotel, '/hotels/<string:id>')
+api.add_resource(Hotel, '/hotels/<int:id>')
 
 if __name__ == '__main__':
     from sql_alchemy import db
