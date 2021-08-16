@@ -15,6 +15,6 @@ class User(Resource):
             try:
                 user.delete_user()
             except:
-                return {'message': 'Internal server error, unable to save data.'}, 500
+                return {'message': 'Internal server error, unable to delete data.'}, 500
             return {'message': 'User been deleted!'}
         return {'message': 'User not found!'}, 404
