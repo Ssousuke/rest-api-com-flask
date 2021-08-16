@@ -44,9 +44,9 @@ class Hotel(Resource):
     arguments.add_argument('valor')
 
     def get(self, id):
-        hotel = Hotel.find_hotel(id)
+        hotel = HotelModel.find_hotel(id)
         if hotel:
-            return hotel
+            return hotel.json()
         return {'message': 'Hotel not found!'}, 404
 
     def post(self, id):
