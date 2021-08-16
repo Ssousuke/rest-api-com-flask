@@ -69,6 +69,8 @@ class Hotel(Resource):
         return hotel_object.json(), 201
 
     def delete(self, id):
-        global hotels
-        hotels = [hotel for hotel in hotels if hotel['id'] != id]
-        return {'message': 'Hotel deleted!'}
+        hotel = HotelModel.find_hotel(id)
+        if hotel:
+            hotel.delete_hotel()
+            return {'message': 'Hotel deleted!'}
+        return {'message': 'Hotel not found!'}
