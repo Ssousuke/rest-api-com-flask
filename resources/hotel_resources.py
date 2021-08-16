@@ -13,9 +13,9 @@ class Hotels(Resource):
 
 class Hotel(Resource):
     arguments = reqparse.RequestParser()
-    arguments.add_argument('nome')
-    arguments.add_argument('estrelas')
-    arguments.add_argument('valor')
+    arguments.add_argument('nome', type=str, required=True, help='The field nome cannot be left blank')
+    arguments.add_argument('estrelas', type=float, required=True, help='The field estrelas cannot be left blank')
+    arguments.add_argument('valor', type=float, required=True, help='The field valor cannot be left blank')
 
     def get(self, id):
         hotel = HotelModel.find_hotel(id)
@@ -28,7 +28,10 @@ class Hotel(Resource):
             return {'message': f'Hotel - {id} already exists.'}, 400
         data = Hotel.arguments.parse_args()
         hotel_object = HotelModel(id, **data)
-        hotel_object.save_hotel()
+        try:
+            hotel_object.save_hotel()
+        except:
+            return {'message': 'Internal server error, unable to save data.'}, 500
         return hotel_object.json(), 200
 
     def put(self, id):
@@ -36,7 +39,10 @@ class Hotel(Resource):
         hotel = HotelModel.find_hotel(id)
         if hotel:
             hotel.update_hotel(**data)
-            hotel.save_hotel()
+            try:
+                hotel.save_hotel()
+            except:
+                return {'message': 'Internal server error, unable to save data.'}, 500
             return hotel.json(), 200
         hotel_object = HotelModel(id, **data)
         hotel_object.save_hotel()
@@ -45,6 +51,9 @@ class Hotel(Resource):
     def delete(self, id):
         hotel = HotelModel.find_hotel(id)
         if hotel:
-            hotel.delete_hotel()
+            try:
+                hotel.delete_hotel()
+            except:
+                return {'message': 'Internal server error, unable to delete data.'}, 500
             return {'message': 'Hotel deleted!'}
         return {'message': 'Hotel not found!'}
